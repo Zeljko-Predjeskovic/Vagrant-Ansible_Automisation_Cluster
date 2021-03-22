@@ -1,0 +1,11 @@
+---
+- name: "docker-ce: Uninstall old version"
+  apt:
+    name: "{{item}}"
+    state: absent
+  loop:
+    - "docker"
+    - "docker-engine"
+    - "docker-io"
+    - "containerd"
+    - "runc"

@@ -1,6 +1,11 @@
+---
 - hosts: all
   gather_facts: yes
   vars:
     my_name: a_b_c
   tasks:
     - debug: msg={{ my_name|replac('_', '-') }}
+    - import_role:
+        name: roles/docker-ce
+      tags:
+        - docker-ce

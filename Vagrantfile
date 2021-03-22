@@ -3,9 +3,8 @@ MANAGER = 1
 WORKERS = 3
 
 Vagrant.configure("2") do |config|
+    
     config.vm.synced_folder '.', '/vagrant', disabled: true
-    config.ssh.username = 'vagrant'
-    config.ssh.password = 'vagrant'
     config.ssh.insert_key = false
 
 
