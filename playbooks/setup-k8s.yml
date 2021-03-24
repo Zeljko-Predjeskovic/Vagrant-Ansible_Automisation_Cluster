@@ -2,9 +2,9 @@
 - hosts: all
   gather_facts: yes
   vars:
-    my_name: a_b_c
+    my_name: Hello world!
   tasks:
-    - debug: msg={{ my_name|replace('_', '-') }}
+    - debug: msg={{ my_name }}
     - import_role:
         name: roles/docker-ce
       tags:

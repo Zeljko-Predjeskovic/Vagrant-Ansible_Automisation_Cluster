@@ -9,3 +9,16 @@
     - "docker-io"
     - "containerd"
     - "runc"
+
+- name: "Install docker and its dependecies"
+  apt:
+    name: "{{ packages }}"
+    state: present
+    update_cache: yes
+  vars:
+    packages:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+  notify:
+    - docker status

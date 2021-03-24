@@ -34,5 +34,10 @@ in der wsl im .ssh ordner die private.keys adden indem man eine config file erst
 
 ![ssh problem](images/img3.PNG)
 
-Ergebnis:
+## Ergebnis:
+
 ![ssh problem](images/img2.PNG)
+
+---
+
+### Bevor ich es mit kubernetes probiere, mach ich docker swarm, dass die files und Host namen k8s sind ist also egal xD fürs erste.
