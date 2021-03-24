@@ -1,0 +1,6 @@
+---
+- name: Add Workers to the Swarm
+  apt:
+  name: "docker swarm join --token {{worker_token}} \ 192.168.50.10:2377"
+  tags: swarm
+  

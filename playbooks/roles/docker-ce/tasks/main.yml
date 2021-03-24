@@ -33,3 +33,8 @@
   apt:
     name: ["docker-ce", "docker-ce-cli", "containerd.io"]
     update_cache: yes
+
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    group: docker

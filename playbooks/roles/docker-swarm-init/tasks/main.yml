@@ -1,0 +1,12 @@
+---
+- name: Initialize Docker Swarm
+  apt:
+  name: docker swarm init --advertise-addr={{ all[k8s-master]['ansible_default_ipv4']['address'] }}
+  register: init_swarm
+  tags: swarm
+
+- name: Get the worker join-token
+  apt:
+  name: docker swarm join-token --quiet worker
+  register: worker_token
+  tags: swarm

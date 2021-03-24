@@ -9,3 +9,27 @@
         name: roles/docker-ce
       tags:
         - docker-ce
+
+- hosts: k8s-master
+  name: Docker swarm init
+  tasks:
+    - import_role:
+        name: roles/docker-swarm-init
+
+- hosts: k8s-worker-1
+  name: Docker swarm add as worker
+  tasks:
+    - import_role:
+        name: roles/docker-swarm-add-worker
+
+- hosts: k8s-worker-2
+  name: Docker swarm add as worker
+  tasks:
+    - import_role:
+        name: roles/docker-swarm-add-worker
+
+- hosts: k8s-worker-3
+  name: Docker swarm add as worker
+  tasks:
+    - import_role:
+        name: roles/docker-swarm-add-worker
