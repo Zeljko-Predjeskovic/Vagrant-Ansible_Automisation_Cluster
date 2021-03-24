@@ -26,18 +26,20 @@ steuern weil ich in der WSL nicht mit ssh zugriff haben kann. Habe einige Tage g
 
 ![ssh problem](images/img1.PNG)
 
-Fahre mit den ansible files trotzdem fort...
+## Problemlösung gefunden:
 
-## Problemlösung endlich gefunden:
-
-in der wsl im .ssh ordner die private.keys adden indem man eine config file erstellt und das rein schreibt:
+in der wsl im .ssh ordner die private.keys von den VMs kopieren und dann eine config file erstellen und das rein schreiben:
 
 ![ssh problem](images/img3.PNG)
+
+so werden die keys im ssh agent gespeichert und mann kann mit ssh auf die VMs steuern
 
 ## Ergebnis:
 
 ![ssh problem](images/img2.PNG)
 
+4 tage recherche für die Lösung nötig :,)
+
 ---
 
-### Bevor ich es mit kubernetes probiere, mach ich docker swarm, dass die files und Host namen k8s sind ist also egal xD fürs erste.
+### Bevor ich es mit kubernetes probiere, mach ich docker swarm. Das die files und Host namen k8s sind ist also egal xD fürs erste.
