@@ -27,3 +27,12 @@ steuern weil ich in der WSL nicht mit ssh zugriff haben kann. Habe einige Tage g
 ![ssh problem](images/img1.PNG)
 
 Fahre mit den ansible files trotzdem fort...
+
+## Problemlösung endlich gefunden:
+
+in der wsl im .ssh ordner die private.keys adden indem man eine config file erstellt und das rein schreibt:
+
+![ssh problem](images/img3.PNG)
+
+Ergebnis:
+![ssh problem](images/img2.PNG)

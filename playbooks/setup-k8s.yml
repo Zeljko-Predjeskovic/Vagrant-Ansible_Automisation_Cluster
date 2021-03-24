@@ -4,7 +4,7 @@
   vars:
     my_name: a_b_c
   tasks:
-    - debug: msg={{ my_name|replac('_', '-') }}
+    - debug: msg={{ my_name|replace('_', '-') }}
     - import_role:
         name: roles/docker-ce
       tags:
