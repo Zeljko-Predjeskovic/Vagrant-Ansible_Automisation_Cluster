@@ -38,8 +38,6 @@ so werden die keys im ssh agent gespeichert und mann kann mit ssh auf die VMs st
 
 ![ssh problem](images/img2.PNG)
 
-4 tage recherche für die Lösung nötig :,)
-
 ---
 
 ### Bevor ich es mit kubernetes probiere, mach ich docker swarm. Das die files und Host namen k8s sind ist also egal xD fürs erste.
