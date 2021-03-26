@@ -1,8 +1,26 @@
-# Vagrant / Ansible / Docker swarm / K8s
+# Vagrant / Ansible / Docker swarm / K8s mit Windows
 
-## Was brauchen wir:
+## Inhaltsverzeichnis
 
-python 3, pip3, ansible
+- [Vagrant / Ansible / Docker swarm / K8s mit Windows](#vagrant--ansible--docker-swarm--k8s-mit-windows)
+  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
+  - [Benötigte Software](#benötigte-software)
+    - [python 3, pip3, ansible](#python-3-pip3-ansible)
+    - [vagrant, virtualbox](#vagrant-virtualbox)
+    - [Problem](#problem)
+    - [Problemlösung](#problemlösung)
+  - [Docker-swarm-setup](#docker-swarm-setup)
+    - [Files](#files)
+    - [Ergebnis:](#ergebnis)
+  - [Kubernetes-setup](#kubernetes-setup)
+
+## Benötigte Software
+
+<br>
+
+### python 3, pip3, ansible
+
+---
 
 alles wird in der wsl gemacht:
 
@@ -19,14 +37,24 @@ alles wird in der wsl gemacht:
 venv ist das virtual environment und hilft uns mit dem requirements.txt
 diese bestimmten versionen mit python zu installieren.
 
-## Situation:
+Anmerkung: ansible packages wurden mit pip nicht vollständig geladen daher ansible mit sudo installiert und dann wieder mit pip.
+
+### vagrant, virtualbox
+
+---
+
+powershell oder windows cmd:
+
+    .~/vagrand_ordner/$vagrant up
+
+### Problem
 
 Vagrant funktioniert, jedoch keine möglichkeit die VMs mit ansible zu
 steuern weil ich in der WSL nicht mit ssh zugriff haben kann. Habe einige Tage getroubleshooted und nicht wirklich eine Lösung gefunden.
 
 ![ssh problem](images/img1.PNG)
 
-## Problemlösung gefunden:
+### Problemlösung
 
 in der wsl im .ssh ordner die private.keys von den VMs kopieren und dann eine config file erstellen und das rein schreiben:
 
@@ -34,28 +62,34 @@ in der wsl im .ssh ordner die private.keys von den VMs kopieren und dann eine co
 
 so werden die keys im ssh agent gespeichert und mann kann mit ssh auf die VMs steuern
 
+---
+
+## Docker-swarm-setup
+
+### Files
+
+<br>
+
+[inventory file](inventory) -VM Hosts
+
+playbooks
+
+[setup-docker-swarms.yml](playbooks/setup-docker-swarms.yml) -ganzes Setup
+
+[roles/docker-ce/tasks/main.yml](playbooks/roles/docker-ce/tasks/main.yml) -installation von Docker
+
+[roles/docker-swarm-init/tasks/main.yml](playbooks/roles/docker-swarm-init/tasks/main.yml) -swarm im manager initialisieren
+
+[roles/docker-swarm-add-worker/tasks/main.yml](playbooks/roles/docker-swarm-add-worker/tasks/main.yml) -worker im swarm einfügen
+
     $ansible-playbook -i inventory -u vagrant --become playbooks/setup-docker-swarms.yml
 
 Ansible setup mit dem command starten...
 
-## Ergebnis:
+Mit ssh in den master Host und den swarm checken
 
-![](images/img2.PNG)
-
----
-
-### Bevor ich es mit kubernetes probiere, mach ich docker swarm. Das die files und Host namen k8s sind ist also egal xD fürs erste.
-
-## Files:
-
-[setup-docker-swarm.yml](playbooks/setup-docker-swarm.yml)
-
-[roles/docker-ce/tasks/main.yml](playbooks/roles/docker-ce/tasks/main.yml)
-
-[roles/docker-swarm-init/tasks/main.yml](playbooks/roles/docker-swarm-init/tasks/main.yml)
-
-[roles/docker-swarm-add-worker/tasks/main.yml](playbooks/roles/docker-swarm-add-worker/tasks/main.yml)
-
-## Ergebnis:
+### Ergebnis:
 
 ![](images/img5.PNG)
+
+## Kubernetes-setup
