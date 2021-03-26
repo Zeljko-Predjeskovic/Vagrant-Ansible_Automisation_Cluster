@@ -1,6 +1,4 @@
 ---
-- debug: msg={{worker_token.stdout}}
-
 - name: Add Workers to the Swarm
-  shell: "docker swarm join --token {{worker_token}} \ 192.168.50.10:2377"
+  shell: "docker swarm join --token {{ hostvars['k8s-master']['worker_token']['stdout'] }} 192.168.50.10:2377"
   tags: swarm

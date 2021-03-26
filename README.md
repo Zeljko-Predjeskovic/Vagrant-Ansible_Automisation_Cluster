@@ -30,14 +30,32 @@ steuern weil ich in der WSL nicht mit ssh zugriff haben kann. Habe einige Tage g
 
 in der wsl im .ssh ordner die private.keys von den VMs kopieren und dann eine config file erstellen und das rein schreiben:
 
-![ssh problem](images/img3.PNG)
+![](images/img3.PNG)
 
 so werden die keys im ssh agent gespeichert und mann kann mit ssh auf die VMs steuern
 
+    $ansible-playbook -i inventory -u vagrant --become playbooks/setup-docker-swarms.yml
+
+Ansible setup mit dem command starten...
+
 ## Ergebnis:
 
-![ssh problem](images/img2.PNG)
+![](images/img2.PNG)
 
 ---
 
 ### Bevor ich es mit kubernetes probiere, mach ich docker swarm. Das die files und Host namen k8s sind ist also egal xD fürs erste.
+
+## Files:
+
+[setup-docker-swarm.yml](playbooks/setup-docker-swarm.yml)
+
+[roles/docker-ce/tasks/main.yml](playbooks/roles/docker-ce/tasks/main.yml)
+
+[roles/docker-swarm-init/tasks/main.yml](playbooks/roles/docker-swarm-init/tasks/main.yml)
+
+[roles/docker-swarm-add-worker/tasks/main.yml](playbooks/roles/docker-swarm-add-worker/tasks/main.yml)
+
+## Ergebnis:
+
+![](images/img5.PNG)
