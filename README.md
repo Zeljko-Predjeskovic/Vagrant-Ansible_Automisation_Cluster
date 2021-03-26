@@ -1,9 +1,17 @@
 # Vagrant / Ansible / Docker swarm / K8s mit Windows
 
-## Inhaltsverzeichnis
+Author: Zeljko Predjeskovic
+
+Quellen:
+
+[Docker-swarm-setup Hilfe](https://github.com/ruanbekker/ansible-docker-swarm)
+
+[Ansible](https://www.ansible.com/)
+
+## Inhaltsverzeichnis (Bitbucket ist zu schlecht für ein Inhaltsverzeichnis)
 
 - [Vagrant / Ansible / Docker swarm / K8s mit Windows](#vagrant--ansible--docker-swarm--k8s-mit-windows)
-  - [Inhaltsverzeichnis](#inhaltsverzeichnis)
+  - [Inhaltsverzeichnis (Bitbucket ist zu schlecht für ein Inhaltsverzeichnis)](#inhaltsverzeichnis-bitbucket-ist-zu-schlecht-für-ein-inhaltsverzeichnis)
   - [Benötigte Software](#benötigte-software)
     - [python 3, pip3, ansible](#python-3-pip3-ansible)
     - [vagrant, virtualbox](#vagrant-virtualbox)
@@ -15,8 +23,6 @@
   - [Kubernetes-setup](#kubernetes-setup)
 
 ## Benötigte Software
-
-<br>
 
 ### python 3, pip3, ansible
 
@@ -45,7 +51,7 @@ Anmerkung: ansible packages wurden mit pip nicht vollständig geladen daher ansi
 
 powershell oder windows cmd:
 
-    .~/vagrand_ordner/$vagrant up
+    $vagrant up
 
 ### Problem
 
@@ -62,13 +68,13 @@ in der wsl im .ssh ordner die private.keys von den VMs kopieren und dann eine co
 
 so werden die keys im ssh agent gespeichert und mann kann mit ssh auf die VMs steuern
 
+ACHTUNG: den .ssh ordner vom Linux Home verzeichnis in der WSL benutzen
+
 ---
 
 ## Docker-swarm-setup
 
 ### Files
-
-<br>
 
 [inventory file](inventory) -VM Hosts
 
@@ -76,11 +82,15 @@ playbooks
 
 [setup-docker-swarms.yml](playbooks/setup-docker-swarms.yml) -ganzes Setup
 
+[setup-docker-swarms-leave.yml](playbooks/setup-docker-swarms.yml) -swarm Löschen
+
 [roles/docker-ce/tasks/main.yml](playbooks/roles/docker-ce/tasks/main.yml) -installation von Docker
 
 [roles/docker-swarm-init/tasks/main.yml](playbooks/roles/docker-swarm-init/tasks/main.yml) -swarm im manager initialisieren
 
 [roles/docker-swarm-add-worker/tasks/main.yml](playbooks/roles/docker-swarm-add-worker/tasks/main.yml) -worker im swarm einfügen
+
+[roles/docker-swarm-leave/tasks/main.yml](playbooks/roles/docker-swarm-leave/tasks/main.yml) -swarm löschen
 
     $ansible-playbook -i inventory -u vagrant --become playbooks/setup-docker-swarms.yml
 

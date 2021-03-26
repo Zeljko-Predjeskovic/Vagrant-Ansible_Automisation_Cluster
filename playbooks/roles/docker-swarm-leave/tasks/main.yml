@@ -1,0 +1,3 @@
+- name: leave docker-swarm
+  shell: docker swarm leave --force
+  tags: swarm
