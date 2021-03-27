@@ -4,9 +4,11 @@ Author: Zeljko Predjeskovic
 
 Quellen:
 
-[Docker-swarm-setup Hilfe](https://github.com/ruanbekker/ansible-docker-swarm)
+[Docker-swarm Setup Hilfe](https://github.com/ruanbekker/ansible-docker-swarm)
 
 [Ansible](https://www.ansible.com/)
+
+[Vagrant setup Hilfe](https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/)
 
 ## Inhaltsverzeichnis (Bitbucket ist zu schlecht für ein Inhaltsverzeichnis)
 
@@ -21,6 +23,8 @@ Quellen:
     - [Files](#files)
     - [Ergebnis:](#ergebnis)
   - [Kubernetes-setup](#kubernetes-setup)
+    - [Files:](#files-1)
+    - [Ergebnis:](#ergebnis-1)
 
 ## Benötigte Software
 
@@ -82,7 +86,7 @@ playbooks
 
 [setup-docker-swarms.yml](playbooks/setup-docker-swarms.yml) -ganzes Setup
 
-[setup-docker-swarms-leave.yml](playbooks/setup-docker-swarms.yml) -swarm Löschen
+[setup-docker-swarms-leave.yml](playbooks/setup-docker-swarm-leave.yml) -swarm Löschen
 
 [roles/docker-ce/tasks/main.yml](playbooks/roles/docker-ce/tasks/main.yml) -installation von Docker
 
@@ -103,3 +107,21 @@ Mit ssh in den master Host und den swarm checken
 ![](images/img5.PNG)
 
 ## Kubernetes-setup
+
+### Files:
+
+playbooks:
+
+[setup-k8s.yml](playbooks/setup-k8s.yml) -setup vom k8s cluster
+
+[setup-k8s-reset.yml](playbooks/setup-k8s-reset.yml) -reset vom cluster
+
+[roles/k8s-reset/task/main.yml](playbooks/roles/k8s-reset/tasks/main.yml) - reset commands
+
+[roles/k8s-install/tasks/main.yml](playbooks/roles/k8s-install/tasks/main.yml) -k8s installieren
+
+[roles/k8s-init/tasks/main.yml](playbooks/roles/k8s-init/tasks/main.yml) -initialisieren vom k8s cluster
+
+### Ergebnis:
+
+![](images/img6.PNG)

@@ -1,0 +1,3 @@
+- name: Join the node to cluster
+  shell: sudo {{ hostvars['k8s-master']['join_command']['stdout'] }}
+#kubeadm join --token <token> <control-plane-host>:<control-plane-port> --discovery-token-ca-cert-hash sha256:<hash>

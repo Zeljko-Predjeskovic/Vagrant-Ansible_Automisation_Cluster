@@ -1,0 +1,45 @@
+---
+- hosts: all
+  gather_facts: yes
+  vars:
+    my_name: Installation of docker
+  tasks:
+    - debug: msg={{ my_name }}
+    - import_role:
+        name: roles/docker-ce
+      tags:
+        - docker-ce
+
+- hosts: all
+  name: Kubernetes Installation
+  tasks:
+    - import_role:
+        name: roles/k8s-install
+
+- hosts: k8s-master
+  become: true
+  name: Kubernetes Initialize for master
+  tasks:
+    - import_role:
+        name: roles/k8s-init
+
+- hosts: k8s-worker-1
+  become: true
+  name: Kubernetes join nodes to kluster
+  tasks:
+    - import_role:
+        name: roles/k8s-add-worker
+
+- hosts: k8s-worker-2
+  become: true
+  name: Kubernetes join nodes to kluster
+  tasks:
+    - import_role:
+        name: roles/k8s-add-worker
+
+- hosts: k8s-worker-3
+  become: true
+  name: Kubernetes join nodes to kluster
+  tasks:
+    - import_role:
+        name: roles/k8s-add-worker
