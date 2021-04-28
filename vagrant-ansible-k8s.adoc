@@ -1,0 +1,177 @@
+== Vagrant / Ansible / Docker swarm / K8s mit Windows
+====== von Zeljko Predjeskovic
+====== am 12.04.2021
+
+== Ziel:
+Diese Dokumentation beschreibt mein Angehen und meine Probleme zum Projekt
+ein Cluster aufzusetzen und mithilfe von Ansible zu steuern.
+
+== Übersicht
+Die Virtual machines setzen wir mit Vagrant auf und steuern diese dann über ssh mit Ansible.
+Mit Ansible kreieren wir dann den Docker-swarm und fügen die worker hinzu sowie in Kubernetes.
+Es wird alles Schrittweise erklärt und währenddessen auch die Probleme beschrieben, die ich hatte.
+
+== Verzeichnisstruktur
+
+Für ein besseren überblick, wo man welche Files erstellt.
+
+[plantuml, format=svg, opts="inline"]
+----
+skinparam Legend {
+	BackgroundColor transparent
+	BorderColor transparent
+}
+legend
+2021-4Xhif-bap-Predjeskovic-Zeljko
+|_ playbooks
+  |_ roles
+    |_ docker-ce/tasks
+      |_ main.yml
+    |_ docker-swarm-add-worker/tasks
+      |_ main.yml
+    |_ docker-swarm-init/tasks
+      |_ main.yml
+    |_ docker-swarm-leave/tasks
+      |_ main.yml
+    |_ k8s-add-worker/tasks
+      |_ main.yml
+    |_ k8s-init/tasks
+      |_ main.yml
+    |_ k8s-install/tasks
+      |_ main.yml
+    |_ k8s-reset/tasks
+      |_ main.yml
+  |_ setup-docker-swarm-leave.yml
+  |_ setup-docker-swarms.yml
+  |_ setup-k8s-reset.yml
+  |_ setup-k8s.yml
+|_ Vagrantfile
+|_ Inventory
+|_ requirements.txt
+
+end legend
+----
+---
+
+== Schritt 1: Installationen
+
+=== Vagrant
+In Windows einfach nur auf den Link drücken: https://www.vagrantup.com/
+
+=== Ansible mit pip venv
+
+Wir installieren Ansible mit ein python environment in der WSL command line.
+
+==== Erstellen vom environment:
+
+    ~\2021-4Xhif-bap-Predjeskovic-Zeljko:~$python -m venv --prompt ansible venv
+
+
+==== Aktivieren:
+
+    ~\2021-4Xhif-bap-Predjeskovic-Zeljko:~$. venv/bin/activate
+
+==== Installieren von Wheel, dann Ansible:
+
+    ~\2021-4Xhif-bap-Predjeskovic-Zeljko(ansible):~$pip install wheel
+
+    ~\2021-4Xhif-bap-Predjeskovic-Zeljko(ansible):~$pip install ansible
+
+
+==== Generiert requirements:
+
+    ~\2021-4Xhif-bap-Predjeskovic-Zeljko(ansible):~$pip freeze >requirements.txt
+
+==== Installiert die requirements:
+
+    ~\2021-4Xhif-bap-Predjeskovic-Zeljko(ansible):~$pip install -r requirements.txt
+
+
+
+Ohne dem python environment kann man Ansible normal installieren,
+ist aber nicht im virtuellem environment drinnen, sondern am Pc.
+
+    :~$sudo apt-get install ansible
+
+=== Schritt 2: Vagrantfile Konfigurieren
+
+[source, ruby]
+IMAGE_NAME = "debian/buster64"
+MANAGER = 1
+WORKERS = 3
+Vagrant.configure("2") do |config|
+    config.vm.synced_folder '.', '/vagrant', disabled: true
+    config.ssh.insert_key = false
+    config.hostmanager.enabled = true
+    config.hostmanager.manage_host = true
+    config.hostmanager.manage_guest = true
+    config.hostmanager.include_offline = true
+    config.vm.provider "virtualbox" do |v|
+        v.memory = 2024
+        v.cpus = 2
+    end
+    config.vm.define "k8s-master" do |master|
+        master.vm.box = IMAGE_NAME
+        master.vm.network "private_network", ip: "192.168.50.10"
+        master.vm.hostname = "k8s-master"
+    end
+    (1..WORKERS).each do |i|
+        config.vm.define "k8s-worker-#{i}" do |node|
+            node.vm.box = IMAGE_NAME
+            node.vm.network "private_network", ip: "192.168.50.#{i + 10}"
+            node.vm.hostname = "k8s-worker-#{i}"
+        end
+    end
+end
+
+---
+
+Disabled, weil es mein Vagrant nicht starten lässt und wir wahrscheinlich keine shared folder brauchen:
+
+[source, ruby]
+config.vm.synced_folder '.', '/vagrant', disabled: true
+
+
+=== Starten der VMs:
+
+In Windows am besten unter der CMD
+
+    ~\2021-4Xhif-bap-Predjeskovic-Zeljko>vagrant up
+
+Bevor wir mit Ansible anfangen, müssen wir noch mit der WSL
+in die VMs zugreifen können. Darum erstellen wir eine .ssh file
+wo wir die private keys von den vagrant VMs reinkopieren.
+
+in der .ssh schreiben wir:
+
+    Host *
+        StricktHostKeyChecking no
+    AddKeysToAgend yes
+    IdentityFile ~/.ssh/k8s-master/private_key
+    IdentityFile ~/.ssh/k8s-worker-1/private_key
+    IdentityFile ~/.ssh/k8s-worker-2/private_key
+    IdentityFile ~/.ssh/k8s-worker-3/private_key
+
+== Schritt 3: Docker-swarm Setup
+
+==== Docker setup starten:
+
+    ~\2021-4Xhif-bap-Predjeskovic-Zeljko(ansible):~$ansible-playbook -i inventory -u vagrant --become playbooks/setup-docker-swarms.yml
+
+==== Docker-swarm verlassen:
+
+    ~\2021-4Xhif-bap-Predjeskovic-Zeljko(ansible):~$ansible-playbook -i inventory -u vagrant --become playbooks/setup-docker-swarms-leave.yml
+
+
+== Schritt 4: Kubernetes Setup
+
+==== K8s setup starten:
+
+        ~\2021-4Xhif-bap-Predjeskovic-Zeljko(ansible):~$ansible-playbook -i inventory -u vagrant --become playbooks/setup-k8s.yml
+
+==== K8s verlassen:
+
+        ~\2021-4Xhif-bap-Predjeskovic-Zeljko(ansible):~$ansible-playbook -i inventory -u vagrant --become playbooks/setup-k8s-reset.yml
+
+
+

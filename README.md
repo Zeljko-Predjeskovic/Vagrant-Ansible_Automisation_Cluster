@@ -12,7 +12,7 @@ Quellen:
 
 ## Start vom Programm
 
-Weidere Info zum starten ist in der dokumentierten PDF.
+Weidere Info zum starten ist in der dokumentierten PDF oder adoc File.
 Die Readme ist als Vorschau für meinen Lehrer gedacht, damit
 das Ergebnis richtig ist.
 
