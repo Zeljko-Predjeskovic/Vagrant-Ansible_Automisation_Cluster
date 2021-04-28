@@ -10,9 +10,16 @@ Quellen:
 
 [Vagrant setup Hilfe](https://kubernetes.io/blog/2019/03/15/kubernetes-setup-using-ansible-and-vagrant/)
 
+## Start vom Programm
+
+Weidere Info zum starten ist in der dokumentierten PDF.
+Die Readme ist als Vorschau für meinen Lehrer gedacht, damit
+das Ergebnis richtig ist.
+
 ## Inhaltsverzeichnis (Bitbucket ist zu schlecht für ein Inhaltsverzeichnis)
 
 - [Vagrant / Ansible / Docker swarm / K8s mit Windows](#vagrant--ansible--docker-swarm--k8s-mit-windows)
+  - [Start vom Programm](#start-vom-programm)
   - [Inhaltsverzeichnis (Bitbucket ist zu schlecht für ein Inhaltsverzeichnis)](#inhaltsverzeichnis-bitbucket-ist-zu-schlecht-für-ein-inhaltsverzeichnis)
   - [Benötigte Software](#benötigte-software)
     - [python 3, pip3, ansible](#python-3-pip3-ansible)
