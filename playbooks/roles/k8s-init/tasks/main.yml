@@ -2,7 +2,9 @@
   shell: kubeadm init --apiserver-advertise-address=192.168.50.10 --apiserver-cert-extra-sans=192.168.50.10 --node-name k8s-master --pod-network-cidr=192.168.0.0/16
 
 - name: remove .kube folder
-  shell: rm -rf /home/.kube
+  file:
+    state: absent
+    path: /home/.kube
 
 - name: Setup kubeconfig for vagrant user
   shell: "{{ item }}"
